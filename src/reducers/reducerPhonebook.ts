@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import Notification from '../components/Notification/ToastNotification';
 import CreatePhonebookCommand from '../models/Phonebook/Commands/CreatePhonebook';
 import Phonebook from '../models/Phonebook/Phonebook';
 import axiosInstance from '../Utils/apiHandler/axiosInstance'
@@ -92,7 +93,7 @@ export const thunkSavePhonebook = (phonebookToSave: CreatePhonebookCommand) => (
             .then(function (response) {
                 resolve(response.data);
             }).catch(function (error) {
-                reject(error);
+                Notification({message: error.response.data.Message, position: "top-right", type: "error" });
             });
     });
 
@@ -111,7 +112,7 @@ export const thunkGetPhonebook = (pageSize: number, pageNo: number, searchStr: s
 
         }).catch(function (error) {
             dispatch(actionFetchingPhonebook(false));
-
+            Notification({message: error.response.data.Message, position: "top-right", type: "error" });
         });
 }
 
@@ -126,8 +127,8 @@ export const thunkDownloadPhonebook = () => (dispatch: any) => {
         link.click();
         link.remove();
 
-    }).catch((response: any) => {
-
+    }).catch((error: any) => {
+        Notification({message: error.response.data.Message, position: "top-right", type: "error" });
     });
 }
 
